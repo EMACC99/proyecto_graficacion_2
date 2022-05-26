@@ -158,3 +158,40 @@ void Model::Draw(){
     rotation -= rotating_factor;
     
 }
+
+
+Player::Player(const std::string &sprites){
+    position = {-0.5f, -0.5f, 0.f};
+}
+
+Player::~Player(){   
+}
+
+
+float Player::x(){
+    return position[0];
+}
+
+float Player::y(){
+    return position[1];
+}
+
+
+void Player::move_x(const Player::direction_sign &dir){
+    position[0] += dir*move_rate;
+}
+
+void Player::move_y(const Player::direction_sign &dir){
+    position[1] += dir*move_rate;
+}
+
+void Player::Draw(){
+    auto [x,y,z]  = position;
+    glPushMatrix();
+     glPointSize(20.0f);
+        glBegin(GL_POINTS);
+            glColor3f(1.0f,0.0f,1.0f);
+            glVertex3f(x,y,z);
+        glEnd();
+    glPopMatrix();
+}

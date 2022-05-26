@@ -4,13 +4,13 @@
 using namespace std::chrono_literals;
 
 Viewport::Viewport(QWidget *parent): QOpenGLWidget(parent){
-    this -> setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
+    setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
     QSurfaceFormat format;
     format.setProfile(QSurfaceFormat::CompatibilityProfile);
     format.setVersion(2,1);
-    this -> setFormat(format);
+    setFormat(format);
 
-    this -> create();
+    create();
 
     LightOn = true;
     connect(&this -> timer, SIGNAL(timeout()), this , SLOT(update()));
@@ -77,19 +77,20 @@ void Viewport::paintGL(){
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
     }
+    player -> Draw();
     
     glEnable(GL_TEXTURE_2D);
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_GEN_T);
-    glBindTexture(GL_TEXTURE_2D, textureID.at("texture"));
-    Scene::draw_teapot();
-    glDisable(GL_TEXTURE_GEN_T);
-    glDisable(GL_TEXTURE_GEN_T);
+    // glEnable(GL_TEXTURE_GEN_S);
+    // glEnable(GL_TEXTURE_GEN_T);
+    // glBindTexture(GL_TEXTURE_2D, textureID.at("texture"));
+    // Scene::draw_teapot();
+    // glDisable(GL_TEXTURE_GEN_T);
+    // glDisable(GL_TEXTURE_GEN_T);
 
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
     glBindTexture(GL_TEXTURE_2D, textureID.at("fur"));
-    modelos[model_index].Draw();
+    // modelos[model_index].Draw();
     glDisable(GL_TEXTURE_GEN_T);
     glDisable(GL_TEXTURE_GEN_S);
    
@@ -97,11 +98,12 @@ void Viewport::paintGL(){
     glBindTexture(GL_TEXTURE_2D, textureID.at("wall"));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     Scene::draw_room();
-    Scene::draw_donut();
+    // Scene::draw_donut();
+
 
     glDisable(GL_TEXTURE_2D);
 }
@@ -132,6 +134,22 @@ void Viewport::keyPressEvent(QKeyEvent *event){
     
     case Qt::Key_3:
         model_index = 2;
+        break;
+
+    case Qt::Key_Up:
+        player -> move_y(player -> POSTIVE);
+        break;
+    
+    case Qt::Key_Down:
+        player -> move_y(player -> NEGATIVE);
+        break;
+
+    case Qt::Key_Left:
+        player -> move_x(player -> NEGATIVE);
+        break;
+
+    case Qt::Key_Right:
+        player -> move_x(player -> POSTIVE);
         break;
 
     default:
@@ -173,4 +191,6 @@ void Viewport::initModels(){
         Model model(files[i]);
         modelos.emplace_back(model);
     }
+
+    player = new Player("assets/");
 }

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <array>
 #ifdef _WIN32
     #include <windows.h>
 #endif
@@ -39,4 +40,31 @@ private:
     GLuint VAO, VBO, EBO; //vertex array obj, vertex buffer obj, 
     GLuint texture;
     float rotation = 0 ;
+};
+
+
+class Player{
+public:
+    Player(const std::string &sprites);
+    ~Player(); 
+
+    enum direction_sign{
+        POSTIVE = 1,
+        NEGATIVE = -1
+    };
+
+    void Draw();
+
+    void move_x(const direction_sign &dir);
+    void move_y(const direction_sign &dir);
+
+    float x();
+    float y();
+
+
+
+private:
+    GLuint texutre;
+    std::array<float, 3> position;
+    float move_rate = 0.1f;
 };

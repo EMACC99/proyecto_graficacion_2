@@ -50,10 +50,15 @@ protected:
 private:
     QTimer timer;
     QOpenGLFunctions *gl;
+
     std::vector<Model> modelos;
     unsigned short model_index = 0;
+
     GLdouble eyez = 5;
     std::unordered_map<std::string ,GLuint> textureID;
+
     bool LightOn;
+
+    Player *player;
 };
 
