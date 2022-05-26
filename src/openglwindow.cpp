@@ -4,13 +4,13 @@
 using namespace std::chrono_literals;
 
 Viewport::Viewport(QWidget *parent): QOpenGLWidget(parent){
-    setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
+    this -> setUpdateBehavior(QOpenGLWidget::NoPartialUpdate);
     QSurfaceFormat format;
     format.setProfile(QSurfaceFormat::CompatibilityProfile);
     format.setVersion(2,1);
-    setFormat(format);
+    this -> setFormat(format);
 
-    create();
+    this -> create();
 
     LightOn = true;
     connect(&this -> timer, SIGNAL(timeout()), this , SLOT(update()));
@@ -77,9 +77,9 @@ void Viewport::paintGL(){
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
     }
-    player -> Draw();
     
     glEnable(GL_TEXTURE_2D);
+
     // glEnable(GL_TEXTURE_GEN_S);
     // glEnable(GL_TEXTURE_GEN_T);
     // glBindTexture(GL_TEXTURE_2D, textureID.at("texture"));
@@ -90,7 +90,7 @@ void Viewport::paintGL(){
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
     glBindTexture(GL_TEXTURE_2D, textureID.at("fur"));
-    // modelos[model_index].Draw();
+    modelos[model_index].Draw();
     glDisable(GL_TEXTURE_GEN_T);
     glDisable(GL_TEXTURE_GEN_S);
    
@@ -104,6 +104,8 @@ void Viewport::paintGL(){
     Scene::draw_room();
     // Scene::draw_donut();
 
+    glBindTexture(GL_TEXTURE_2D, textureID.at("kirby"));
+    player -> Draw();
 
     glDisable(GL_TEXTURE_2D);
 }
@@ -159,10 +161,12 @@ void Viewport::keyPressEvent(QKeyEvent *event){
 
 void Viewport::initTextures(){
 
-    int n = 3;
-    std::vector<std::string> files {"fur.png", "texture.bmp", "wall.png"};
 
-    std::string texture_names[] = {"fur", "texture", "wall"};
+    std::vector<std::string> files {"fur.png", "texture.bmp", "wall.png", "Kirby_walking_2.png"};
+
+    std::string texture_names[] = {"fur", "texture", "wall", "kirby"};
+
+    unsigned int n = files.size();
 
     std::vector<GLuint> IDS(n);
 
@@ -184,10 +188,11 @@ void Viewport::initTextures(){
 
 
 void Viewport::initModels(){
-    int n = 3;
-    std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
+    // int n = 1;
+    // std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
+    std::vector<std::string> files {"bunny.obj"};
 
-    for (int i = 0; i < n; ++i){
+    for (unsigned int i = 0; i < files.size(); ++i){
         Model model(files[i]);
         modelos.emplace_back(model);
     }

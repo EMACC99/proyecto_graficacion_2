@@ -146,7 +146,7 @@ void Model::Draw(){
     
     glPushMatrix();
         glScalef(.3f, .3f, .3f);
-        glTranslatef(-.7f, 0, 0);
+        glTranslatef(2.f, 0, 0);
         glColor3f(1,1,1);
         glRotatef(rotation, 1,1,1);
         glDrawArrays(GL_TRIANGLES, 0, vertexData.size() / 6);
@@ -188,10 +188,22 @@ void Player::move_y(const Player::direction_sign &dir){
 void Player::Draw(){
     auto [x,y,z]  = position;
     glPushMatrix();
-     glPointSize(20.0f);
-        glBegin(GL_POINTS);
-            glColor3f(1.0f,0.0f,1.0f);
-            glVertex3f(x,y,z);
+        // glPointSize(20.0f);
+        // glScalef(0.1f, 0.1f, 0.1f);
+        // glBegin(GL_POINTS);
+        //     glColor3f(1.0f,0.0f,1.0f);
+        //     glVertex3f(x,y,z);
+        // glEnd();
+        glTranslatef(x,y,z);
+        glBegin(GL_POLYGON);
+            glTexCoord2f(1.0f, 0.0f);
+            glVertex3f( 1.f,  1.0f, 0.f);
+            glTexCoord2f(1.0f,1.0f);
+            glVertex3f(-1.f,  1.0f, 0.f);
+            glTexCoord2f(0.0f,1.0f);
+            glVertex3f(-1.f, -1.0f, 0.f);
+            glTexCoord2f(0.0f,0.0f);
+            glVertex3f( 1.f, -1.0f, 0.f);
         glEnd();
     glPopMatrix();
 }
