@@ -111,6 +111,8 @@ Model::Model(const std::string &filename){
     loader.LoadFile(path.string());
     objl::Mesh mesh = loader.LoadedMeshes.back();
 
+    position = {2.f, 0, 0};
+
     for (unsigned long vertex = 0; vertex < mesh.Vertices.size(); ++vertex){
         vertexData.push_back(mesh.Vertices[vertex].Position.X);
         vertexData.push_back(mesh.Vertices[vertex].Position.Y);
@@ -120,16 +122,6 @@ Model::Model(const std::string &filename){
         vertexData.push_back(mesh.Vertices[vertex].Normal.Z);
     }
 
-    
-    // glGenVertexArrays(1, &VAO);
-    // glGenBuffers(1, &VBO);
-
-    // glBindVertexArray(VAO);
-    // glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    // glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
-
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    // glEnableVertexAttribArray(0);
 }
 
 Model::~Model(){
@@ -146,7 +138,7 @@ void Model::Draw(){
     
     glPushMatrix();
         glScalef(.3f, .3f, .3f);
-        glTranslatef(2.f, 0, 0);
+        glTranslatef(position[0], position[1], position[2]);
         glColor3f(1,1,1);
         glRotatef(rotation, 1,1,1);
         glDrawArrays(GL_TRIANGLES, 0, vertexData.size() / 6);
@@ -160,8 +152,22 @@ void Model::Draw(){
 }
 
 
+float Model::x(){
+    return position[0];
+}
+
+float Model::y(){
+    return position[1];
+}
+
+float Model::z(){
+    return position[2];
+}
+
+
 Player::Player(const std::string &sprites){
     position = {-0.5f, -0.5f, 0.f};
+    current_sprite = 0;
 }
 
 Player::~Player(){   
@@ -196,14 +202,14 @@ void Player::Draw(){
         // glEnd();
         glTranslatef(x,y,z);
         glBegin(GL_POLYGON);
-            glTexCoord2f(1.0f, 0.0f);
-            glVertex3f( 1.f,  1.0f, 0.f);
-            glTexCoord2f(1.0f,1.0f);
-            glVertex3f(-1.f,  1.0f, 0.f);
-            glTexCoord2f(0.0f,1.0f);
-            glVertex3f(-1.f, -1.0f, 0.f);
-            glTexCoord2f(0.0f,0.0f);
-            glVertex3f( 1.f, -1.0f, 0.f);
+            glTexCoord2f(0.0f, 0.f);
+            glVertex3f(-1.0f, 1.0f, 0.0f); // top left
+            glTexCoord2f(1.f,0.0f);
+            glVertex3f(1.0f, 1.0f, 0.0f); // top right 
+            glTexCoord2f(1.0f,1.f);
+            glVertex3f(1.0f, -1.0f, 0.0f); // bottom right
+            glTexCoord2f(1.0f,0.0f);
+            glVertex3f(-1.0f, -1.0f, 0.0f); // bottom left
         glEnd();
     glPopMatrix();
 }

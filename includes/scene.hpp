@@ -11,11 +11,12 @@
     #include <OpenGL/glu.h>
     #include <GLUT/glut.h>
 #else
-
     #include <GL/gl.h>
     #include <GL/glu.h>
     #include <GL/glut.h>
 #endif
+
+#include <QTimer>
 #include <glm/glm.hpp>
 
 constexpr float rotating_factor = 0.5f;
@@ -35,11 +36,17 @@ public:
     Model(const std::string &filename);
     ~Model();
     void Draw();
+
+    float x();
+    float y();
+    float z();
+
 private:
     std::vector<GLfloat> vertexData;
     GLuint VAO, VBO, EBO; //vertex array obj, vertex buffer obj, 
     GLuint texture;
-    float rotation = 0 ;
+    float rotation = 0;
+    std::array<float, 3> position;
 };
 
 
@@ -61,6 +68,7 @@ public:
     float x();
     float y();
 
+    unsigned short int current_sprite;
 
 
 private:
