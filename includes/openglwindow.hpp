@@ -56,8 +56,14 @@ private:
 
     GLdouble eyez = 5;
     std::unordered_map<std::string ,GLuint> textureID;
+    
+    std::vector<GLuint> kirbyID;
+    
 
     bool LightOn;
+
+    std::string frag_shader, geom_shader, vert_shader;
+    GLuint program;
 
     Player *player;
 };

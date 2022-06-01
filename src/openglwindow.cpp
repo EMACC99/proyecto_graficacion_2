@@ -15,6 +15,11 @@ Viewport::Viewport(QWidget *parent): QOpenGLWidget(parent){
     LightOn = true;
     connect(&this -> timer, SIGNAL(timeout()), this , SLOT(update()));
     timer.start(100ms);
+
+    // vert_shader = "program.vert";
+    vert_shader = "";
+    frag_shader = "program.frag"; 
+    geom_shader = "";
 }
 
 Viewport::~Viewport(){
@@ -47,6 +52,10 @@ void Viewport::initializeGL(){
     initTextures();
     initModels();
 
+    if(CompileShader(vert_shader, geom_shader, frag_shader, &program) == false){
+        std::cout<<"An error occurred while compiling and linking the shaders"<<std::endl;
+    }
+
     resizeGL(this -> width(), this -> height());
     
 }
@@ -77,7 +86,16 @@ void Viewport::paintGL(){
         glDisable(GL_LIGHT0);
         glEnable(GL_LIGHT1);
     }
-    
+
+
+    if (std::abs(player -> x() - modelos[model_index].x()) < 1.f){
+        glUseProgram(program);
+        // std::cout << "boo!\r"; 
+    }
+    else{
+        glUseProgram(0);
+        // std::cout << "no boo :x\r";
+    }
     glEnable(GL_TEXTURE_2D);
 
     // glEnable(GL_TEXTURE_GEN_S);
@@ -104,7 +122,7 @@ void Viewport::paintGL(){
     Scene::draw_room();
     // Scene::draw_donut();
 
-    glBindTexture(GL_TEXTURE_2D, textureID.at("kirby"));
+    glBindTexture(GL_TEXTURE_2D, kirbyID.at(player -> current_sprite));
     player -> Draw();
 
     glDisable(GL_TEXTURE_2D);
@@ -140,18 +158,30 @@ void Viewport::keyPressEvent(QKeyEvent *event){
 
     case Qt::Key_Up:
         player -> move_y(player -> POSTIVE);
+        player -> current_sprite += 1;
+        if (player -> current_sprite >= kirbyID.size())
+            player -> current_sprite = 0;
         break;
     
     case Qt::Key_Down:
         player -> move_y(player -> NEGATIVE);
+        player -> current_sprite += 1;
+        if (player -> current_sprite >= kirbyID.size())
+            player -> current_sprite = 0;
         break;
 
     case Qt::Key_Left:
         player -> move_x(player -> NEGATIVE);
+        player -> current_sprite += 1;
+        if (player -> current_sprite >= kirbyID.size())
+            player -> current_sprite = 0;
         break;
 
     case Qt::Key_Right:
         player -> move_x(player -> POSTIVE);
+        player -> current_sprite += 1;
+        if (player -> current_sprite >= kirbyID.size())
+            player -> current_sprite = 0;
         break;
 
     default:
@@ -162,16 +192,25 @@ void Viewport::keyPressEvent(QKeyEvent *event){
 void Viewport::initTextures(){
 
 
-    std::vector<std::string> files {"fur.png", "texture.bmp", "wall.png", "Kirby_walking_2.png"};
+    std::vector<std::string> files {"fur.png", "texture.bmp", "wall.png"};
+    std::vector<std::string> texture_names = {"fur", "texture", "wall"};
 
-    std::string texture_names[] = {"fur", "texture", "wall", "kirby"};
+    std::vector<std::string> kirby;
+    std::vector<std::string> kirby_names;
+
+    uint8_t count = 1;
+    for (const auto &item : fs::directory_iterator("assets/Kirby/")){
+        kirby.emplace_back("Kirby/" + item.path().filename().string()); 
+        kirby_names.emplace_back("kirby_" + std::to_string(count));
+        ++count;
+    }
 
     unsigned int n = files.size();
 
     std::vector<GLuint> IDS(n);
 
     glGenTextures(n, IDS.data());
-    for (int i = 0; i < n; ++i){
+    for (unsigned int i = 0; i < n; ++i){
         textureID[texture_names[i]] = IDS[i];
         glBindTexture(GL_TEXTURE_2D, IDS[i]);
 
@@ -181,14 +220,40 @@ void Viewport::initTextures(){
         auto [textureData, width, height] = Texture::LoadTextureFile(files[i]);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
         glBindTexture(GL_TEXTURE_2D, 0);
+        Texture::FreeTextureData(textureData);        
+    }
+
+
+    n = kirby.size();
+
+    // std::fill(IDS.begin(), IDS.end(), 0);
+
+    IDS.clear();
+
+    for(unsigned int i = 0; i < n; ++i)
+        IDS.emplace_back(0);
+
+    kirbyID.resize(n, 0);
+
+    glGenTextures(n , IDS.data());
+
+    for (unsigned int i = 0; i < n; ++i){
+        kirbyID[i] = IDS[i];
+        glBindTexture(GL_TEXTURE_2D, IDS[i]);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+        auto [textureData, width, height] = Texture::LoadTextureFile(kirby[i]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
         Texture::FreeTextureData(textureData);
-        
     }
 }
 
 
 void Viewport::initModels(){
-    // int n = 1;
+
     // std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
     std::vector<std::string> files {"bunny.obj"};
 
