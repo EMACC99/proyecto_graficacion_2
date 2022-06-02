@@ -1,0 +1,28 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: update
+      run: sudo apt update && sudo apt upgrade -y
+    - name: install 
+      run: sudo apt install libglu1-mesa-dev freeglut3-dev mesa-common-dev libglm-dev libglew-dev -y 
+      
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2    
+
+    - name: qmake
+      run : qmake
+    - name: make
+      run: make -j
+
