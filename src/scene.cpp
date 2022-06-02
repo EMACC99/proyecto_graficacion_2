@@ -194,22 +194,18 @@ void Player::move_y(const Player::direction_sign &dir){
 void Player::Draw(){
     auto [x,y,z]  = position;
     glPushMatrix();
-        // glPointSize(20.0f);
-        // glScalef(0.1f, 0.1f, 0.1f);
-        // glBegin(GL_POINTS);
-        //     glColor3f(1.0f,0.0f,1.0f);
-        //     glVertex3f(x,y,z);
-        // glEnd();
+        glScalef(0.5f, 0.5f, 0.5f);
+        // glRotatef(90, 1, 0, 0);
         glTranslatef(x,y,z);
         glBegin(GL_POLYGON);
-            glTexCoord2f(0.0f, 0.f);
-            glVertex3f(-1.0f, 1.0f, 0.0f); // top left
+            glTexCoord2f(0.0f, 1.0f);
+            glVertex3f(-0.5f, 0.5f, 0.0f); // top left
+            glTexCoord2f(1.0f,1.0f);
+            glVertex3f(0.5f, 0.5f, 0.0f); // top right 
             glTexCoord2f(1.f,0.0f);
-            glVertex3f(1.0f, 1.0f, 0.0f); // top right 
-            glTexCoord2f(1.0f,1.f);
-            glVertex3f(1.0f, -1.0f, 0.0f); // bottom right
-            glTexCoord2f(1.0f,0.0f);
-            glVertex3f(-1.0f, -1.0f, 0.0f); // bottom left
+            glVertex3f(0.5f, -0.5f, 0.0f); // bottom right
+            glTexCoord2f(0.0f, 0.f);
+            glVertex3f(-0.5f, -0.5f, 0.0f); // bottom left
         glEnd();
     glPopMatrix();
 }
