@@ -10,7 +10,7 @@ std::tuple<unsigned char *, int, int> Texture::LoadTextureFile(const std::string
     stbi_set_flip_vertically_on_load(true);
 
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 3);
     if (data == NULL){
         std::cerr << "Failed to load texture" << std::endl;
         stbi_image_free(data);
@@ -46,7 +46,7 @@ void CompileShader(const char *shader_src_ptr, GLuint *ShaderID, int *InfoLogLen
     gl -> glShaderSource(*ShaderID, 1, &shader_src_ptr , NULL);
 	gl -> glCompileShader(*ShaderID);
 
-	// Check Vertex Shader
+	// Check Shader
 	gl -> glGetShaderiv(*ShaderID, GL_COMPILE_STATUS, Result);
 	gl -> glGetShaderiv(*ShaderID, GL_INFO_LOG_LENGTH, InfoLogLength);
 	if ( *InfoLogLength > 0 ){
