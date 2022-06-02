@@ -16,10 +16,13 @@ Viewport::Viewport(QWidget *parent): QOpenGLWidget(parent){
     connect(&this -> timer, SIGNAL(timeout()), this , SLOT(update()));
     timer.start(100ms);
 
-    // vert_shader = "program.vert";
-    vert_shader = "";
-    frag_shader = "program.frag"; 
+    vert_shader = "programs.vert";
+    frag_shader = "programs.frag";
     geom_shader = "";
+
+    context = new QOpenGLContext;
+    context -> setFormat(format);
+    context -> create();
 }
 
 Viewport::~Viewport(){
@@ -31,6 +34,13 @@ Viewport::~Viewport(){
 }
 
 void Viewport::initializeGL(){
+    gl = context -> functions(); 
+    qDebug() << context;
+    qDebug() << context -> isValid();
+    qDebug() << (const char*) gl -> glGetString(GL_VERSION);
+    // qDebug() << (const char*) gl -> glGetString(GL_EXTENSIONS);
+    qDebug() << (const char*) gl -> glGetString(GL_SHADING_LANGUAGE_VERSION);
+
 
     GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };
     GLfloat LightDiffuse_blue[]= { 0.0f, 0.0f, 1.0f, 1.0f }; //azul
@@ -52,9 +62,7 @@ void Viewport::initializeGL(){
     initTextures();
     initModels();
 
-    if(CompileShader(vert_shader, geom_shader, frag_shader, &program) == false){
-        std::cout<<"An error occurred while compiling and linking the shaders"<<std::endl;
-    }
+    program = LoadShaders(vert_shader, frag_shader, gl);
 
     resizeGL(this -> width(), this -> height());
     
@@ -88,13 +96,13 @@ void Viewport::paintGL(){
     }
 
 
-    if (std::abs(player -> x() - modelos[model_index].x()) < 1.f){
-        glUseProgram(program);
-        // std::cout << "boo!\r"; 
+    if (std::abs(player -> x() - modelos[model_index].x()) < 1.f && std::abs(player -> y() - modelos[model_index].y()) < .1f){
+        gl -> glUseProgram(program);
+        std::cout << "\rboo!"; 
     }
     else{
-        glUseProgram(0);
-        // std::cout << "no boo :x\r";
+        gl -> glUseProgram(0);
+        std::cout << "\rno boo :x";
     }
     glEnable(GL_TEXTURE_2D);
 
@@ -254,8 +262,8 @@ void Viewport::initTextures(){
 
 void Viewport::initModels(){
 
-    // std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
-    std::vector<std::string> files {"bunny.obj"};
+    std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
+    // std::vector<std::string> files {"bunny.obj"};
 
     for (unsigned int i = 0; i < files.size(); ++i){
         Model model(files[i]);

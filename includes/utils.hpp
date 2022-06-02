@@ -1,7 +1,7 @@
 #pragma once
 #include <QtOpenGL>
 #include <QImage>
-
+#include <QOpenGLFunctions>
 
 #include <string>
 #include <filesystem>
@@ -35,4 +35,4 @@ public:
     static void FreeTextureData(unsigned char *data);
 };
 
-GLuint LoadShaders(const std::string &vertex_file, const std::string &fragment_file);
+GLuint LoadShaders(const std::string &vertex_file, const std::string &fragment_file, QOpenGLFunctions *gl);
