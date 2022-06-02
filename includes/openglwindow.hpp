@@ -47,6 +47,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
 
+    QOpenGLContext *context;
+
 private:
     QTimer timer;
     QOpenGLFunctions *gl;

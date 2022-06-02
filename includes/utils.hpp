@@ -35,4 +35,4 @@ public:
     static void FreeTextureData(unsigned char *data);
 };
 
-bool CompileShader(std::string nvert,std::string ngeom, std::string nfrag,GLuint *prog);
+GLuint LoadShaders(const std::string &vertex_file, const std::string &fragment_file);
