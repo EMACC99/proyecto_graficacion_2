@@ -23,17 +23,20 @@ make
 
 ## Instrucciones de uso
 
-Mover al Kirby: <kbd> W </kdb>,  <kdb> A </kbd>, <kdb> S </kdb>, <kdb> D </kdb>
+Mover al Kirby:
+<kbd> W A S D </kdb>
 ![move](Images/move.gif)
 
 Cuando se acerca al objeto, se activa el shader
 ![shader](Images/shader.gif)
 
-Para cambiar la iluminacion, presione la tecla <kbd>L</kdb>.
+Para cambiar la iluminacion, presione la tecla
+<kbd>L</kbd>
 ![luz](Images/Luz.gif)
 Mueva la rueda del mouse para hacer zoom en la escena.
 ![zoom](Images/zoom.gif)
-Cambia el modelo obj con la tecala <kbd>1</kbd>, <kbd>2</kbd> o <kbd>3</kbd>
+Cambia el modelo obj con las tecla:
+<kbd>1, 2</kbd> o <kbd>3</kbd>
 ![cambio](Images/change_obj.gif)
 
 ## Ventajas y otras notas
