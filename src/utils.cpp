@@ -52,7 +52,7 @@ void CompileShader(const char *shader_src_ptr, GLuint *ShaderID, int *InfoLogLen
 	if ( *InfoLogLength > 0 ){
 		std::vector<char> ShaderErrorMessage(*InfoLogLength+1);
 		gl -> glGetShaderInfoLog(*ShaderID, *InfoLogLength, NULL, &ShaderErrorMessage[0]);
-		printf("%s\n", &ShaderErrorMessage[0]);
+		qDebug() << &ShaderErrorMessage[0];
 	}
 }
 
@@ -88,7 +88,7 @@ GLuint LoadShaders(const std::string &vertex_file, const std::string &fragment_f
     CompileShader(fragment_scr_ptr, &FragmentShaderID, &InfoLogLength, &Result, gl);
 
 
-    printf("Linking program\n");
+    qDebug() << "Linking program";
 	GLuint ProgramID = gl -> glCreateProgram();
 	gl -> glAttachShader(ProgramID, VertexShaderID);
 	gl -> glAttachShader(ProgramID, FragmentShaderID);
@@ -100,7 +100,7 @@ GLuint LoadShaders(const std::string &vertex_file, const std::string &fragment_f
 	if ( InfoLogLength > 0 ){
 		std::vector<char> ProgramErrorMessage(InfoLogLength+1);
 		gl -> glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		printf("%s\n", &ProgramErrorMessage[0]);
+		qDebug() <<  &ProgramErrorMessage[0];
 	}
 	
 	gl -> glDetachShader(ProgramID, VertexShaderID);
