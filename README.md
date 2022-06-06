@@ -35,8 +35,10 @@ Para cambiar la iluminacion, presione la tecla
 <kbd>L</kbd>
 
 ![luz](Images/Luz.gif)
+
 Mueva la rueda del mouse para hacer zoom en la escena.
 ![zoom](Images/zoom.gif)
+
 Cambia el modelo obj con las tecla:
 <kbd>1, 2</kbd> o <kbd>3</kbd>
 
