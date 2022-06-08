@@ -96,14 +96,7 @@ void Viewport::paintGL(){
     }
 
 
-    if (std::abs(player -> x() - modelos[model_index].x()) < 1.f && std::abs(player -> y() - modelos[model_index].y()) < .1f){
-        gl -> glUseProgram(program);
-        std::cout << "\rboo!"; 
-    }
-    else{
-        gl -> glUseProgram(0);
-        std::cout << "\rno boo :x";
-    }
+
     glEnable(GL_TEXTURE_2D);
 
     // glEnable(GL_TEXTURE_GEN_S);
@@ -116,11 +109,18 @@ void Viewport::paintGL(){
     glEnable(GL_TEXTURE_GEN_S);
     glEnable(GL_TEXTURE_GEN_T);
     glBindTexture(GL_TEXTURE_2D, textureID.at("fur"));
+    if (std::abs(player -> x() - modelos[model_index].x()) < 1.f && std::abs(player -> y() - modelos[model_index].y()) < .1f){
+        gl -> glUseProgram(program);
+        std::cout << "\rboo!"; 
+    }
+    else{
+        gl -> glUseProgram(0);
+        std::cout << "\rno boo :x";
+    }
     modelos[model_index].Draw();
     glDisable(GL_TEXTURE_GEN_T);
     glDisable(GL_TEXTURE_GEN_S);
-   
-   
+    gl -> glUseProgram(0);
     glBindTexture(GL_TEXTURE_2D, textureID.at("wall"));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
