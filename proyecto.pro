@@ -18,10 +18,8 @@ HEADERS+=\
 
 QMAKE_CXXFLAGS+= -std=c++17 -g -Wno-deprecated-declarations -Wall -Wpedantic -Wextra -Wno-sign-compare
 
-
-
-CONFIG += debug
-#CONFIG += release
+#CONFIG += debug
+CONFIG += release
 
 # make a mac debug build instead of an .app
 CONFIG -= app_bundle
