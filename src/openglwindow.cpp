@@ -199,7 +199,6 @@ void Viewport::keyPressEvent(QKeyEvent *event){
 
 void Viewport::initTextures(){
 
-
     std::vector<std::string> files {"fur.png", "texture.bmp", "wall.png"};
     std::vector<std::string> texture_names = {"fur", "texture", "wall"};
 
@@ -231,10 +230,7 @@ void Viewport::initTextures(){
         Texture::FreeTextureData(textureData);        
     }
 
-
     n = kirby.size();
-
-    // std::fill(IDS.begin(), IDS.end(), 0);
 
     IDS.clear();
 
@@ -263,7 +259,6 @@ void Viewport::initTextures(){
 void Viewport::initModels(){
 
     std::vector<std::string> files {"bunny.obj", "dragon.obj", "tyra.obj"};
-    // std::vector<std::string> files {"bunny.obj"};
 
     for (unsigned int i = 0; i < files.size(); ++i){
         Model model(files[i]);
