@@ -49,6 +49,9 @@ protected:
 
     QOpenGLContext *context;
 
+    std::string frag_shader, geom_shader, vert_shader;
+
+
 private:
     QTimer timer;
     QOpenGLFunctions *gl;
@@ -64,7 +67,6 @@ private:
 
     bool LightOn;
 
-    std::string frag_shader, geom_shader, vert_shader;
     GLuint program;
 
     Player *player;
