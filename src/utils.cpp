@@ -8,9 +8,8 @@ std::tuple<unsigned char *, int, int> Texture::LoadTextureFile(const std::string
     fs::path path = "assets/" + filename;
     path = fs::absolute(path);
     stbi_set_flip_vertically_on_load(true);
-
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(path.c_str(), &width, &height, &nrChannels, 3);
+    unsigned char *data = stbi_load(path.string().c_str(), &width, &height, &nrChannels, 3);
     if (data == NULL){
         std::cerr << "Failed to load texture" << std::endl;
         stbi_image_free(data);

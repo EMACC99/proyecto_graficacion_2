@@ -32,6 +32,9 @@ macx {
 	LIBS += -framework OpenGL -framework GLUT -framework Cocoa
 
 }
+win32{
+    LIBS +=  -lglu32 -lopengl32 -lfreeglut
+}
 else{
 	LIBS += -lGL -lglut -lGLU -lGLEW
 }
