@@ -28,14 +28,14 @@ CONFIG -= app_bundle
 MOC_DIR = tmp/moc/
 OBJECTS_DIR = tmp/obj/
 
-macx {
+macx{
 	LIBS += -framework OpenGL -framework GLUT -framework Cocoa
 
 }
 win32{
     LIBS +=  -lglu32 -lopengl32 -lfreeglut
 }
-else{
+unix:!macx{
 	LIBS += -lGL -lglut -lGLU -lGLEW
 }
 
